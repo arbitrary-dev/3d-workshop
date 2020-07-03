@@ -1,7 +1,7 @@
 # 3D workshop (C++)
 
 ```
-cmake -GNinja -s . -t build
+cmake -G Ninja -S . -B build
 cd build
 ninja
 tests\runUnitTests
