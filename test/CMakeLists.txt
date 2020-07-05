@@ -2,9 +2,13 @@
 # SECTION: add unit tests
 # ------------------------------------------------------------------------------
 add_executable(runUnitTests
-  doa.cpp
+  vector.cpp
 )
 
-target_link_libraries(runUnitTests gtest gtest_main)
+target_link_libraries(runUnitTests
+  Lib
+  gtest
+  gtest_main
+)
 
-add_test(gtestAlive runUnitTests)
+add_test(Vector runUnitTests)

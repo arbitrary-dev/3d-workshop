@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 3.14.6)
 project(3D_WORKSHOP)
 
+include_directories(inc)
+add_subdirectory(src)
+
 # ------------------------------------------------------------------------------
 # SECTION: Google Test (gtest) unit testing framework
 # ------------------------------------------------------------------------------
@@ -14,4 +17,4 @@ enable_testing()
 # ------------------------------------------------------------------------------
 # SECTION: add unit tests
 # ------------------------------------------------------------------------------
-add_subdirectory(tests)
+add_subdirectory(test)

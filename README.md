@@ -3,6 +3,5 @@
 ```
 cmake -G Ninja -S . -B build
 cd build
-ninja
-tests\runUnitTests
+ninja && test\runUnitTests
 ```
