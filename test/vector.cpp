@@ -70,7 +70,7 @@ TEST(Vector, MultiplicationByVector) {
   EXPECT_EQ(v, vMult);
 }
 
-TEST(Vector, DivizionByScalar) {
+TEST(Vector, DivisionByScalar) {
   const Vector v1 = Vector(2, 4, 6, 8);
   const Vector v2 = Vector(1, 2, 3, 4);
   EXPECT_EQ(v1 / 2, v2);
