@@ -1,4 +1,4 @@
-# 3D workshop (C++)
+# 3D workshop in C++
 
 ```
 cmake -G Ninja -S . -B build
