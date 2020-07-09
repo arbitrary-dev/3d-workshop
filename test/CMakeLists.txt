@@ -3,6 +3,7 @@
 # ------------------------------------------------------------------------------
 add_executable(runUnitTests
   vector.cpp
+  matrix.cpp
 )
 
 target_link_libraries(runUnitTests
