@@ -4,6 +4,9 @@ project(3D_WORKSHOP)
 include_directories(inc)
 add_subdirectory(src)
 
+set(WITH_GFLAGS OFF)
+add_subdirectory(external/glog EXCLUDE_FROM_ALL)
+
 # ------------------------------------------------------------------------------
 # SECTION: Google Test (gtest) unit testing framework
 # ------------------------------------------------------------------------------

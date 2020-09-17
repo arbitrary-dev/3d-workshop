@@ -2,3 +2,6 @@
 	path = external/gtest
 	url = https://github.com/google/googletest.git
 	branch = v1.10.x
+[submodule "external/glog"]
+	path = external/glog
+	url = https://github.com/google/glog.git

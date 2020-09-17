@@ -1,11 +1,12 @@
 #include "matrix.hpp"
 #include <cstdlib>
+//#include "glog/logging.h"
 
-Matrix::Matrix(int rows, int cols)
-  : rows(rows)
-  , cols(cols)
+Matrix::Matrix(int cols, int rows)
+  : cols(cols)
+  , rows(rows)
 {
-  m = (float *) malloc((rows * cols) * (sizeof(float)));
+  m = (float *) calloc(cols * rows, sizeof(float));
 }
 
 Matrix* Matrix::identity(int size) {
@@ -16,15 +17,59 @@ Matrix* Matrix::identity(int size) {
 }
 
 int Matrix::length() const {
-  return rows * cols;
+  return cols * rows;
 }
 
-float Matrix::get(int row, int col) const {
+float Matrix::get(int col, int row) const {
   return m[row * cols + col];
 }
 
-void Matrix::set(int row, int col, float value) {
+void Matrix::set(int col, int row, float value) {
   m[row * cols + col] = value;
+}
+
+Matrix Matrix::fill(std::vector<float> v) {
+  int i = 0;
+  for (float f : v) {
+    m[i++] = f;
+    if (i == rows * cols)
+      break;
+  }
+  return *this;
+}
+
+bool Matrix::operator==(const Matrix &that) const {
+  if (rows != that.rows || cols != that.cols)
+    return false;
+  for (int i = 0; i < rows * cols; ++i) {
+    // LOG(INFO) << m[i] << "?" << that.m[i];
+    if (m[i] != that.m[i])
+      return false;
+  }
+  return true;
+}
+
+bool Matrix::operator!=(const Matrix &that) const {
+  return !(*this == that);
+}
+
+Matrix Matrix::transpose() {
+  int L = length();
+  float *neu = (float *) malloc(L * sizeof(float));
+
+  for (int i = 0; i < L; ++i) {
+    int col = i % cols;
+    int row = i / cols;
+    neu[col * rows + row] = m[i];
+  }
+  free(m);
+  m = neu;
+
+  int temp = cols;
+  cols = rows;
+  rows = temp;
+
+  return *this;
 }
 
 /*
@@ -61,3 +106,13 @@ return out;
 }
 ￼
 */
+
+std::ostream& operator<<(std::ostream& os, const Matrix& m) {
+  for (int j = 0; j < m.rows; ++j)
+    for (int i = 0; i < m.cols; ++i) {
+      if (i == 0)
+        os << "\n";
+      os << " " << m.get(i, j);
+    }
+  return os;
+}

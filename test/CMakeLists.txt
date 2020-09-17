@@ -9,7 +9,7 @@ add_executable(runUnitTests
 target_link_libraries(runUnitTests
   Lib
   gtest
-  gtest_main
+  gtest_main # TODO a custom main for tests with logging to stderr
 )
 
 add_test(Vector runUnitTests)

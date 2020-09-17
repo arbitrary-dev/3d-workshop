@@ -2,31 +2,37 @@
 #define H_MATRIX
 
 #include "vector.hpp"
+#include <vector>
+#include <ostream>
 
 class Matrix {
 
-  int rows, cols;
+  int cols, rows;
   float *m;
 
 public:
 
-  Matrix(int rows, int cols);
+  Matrix(int cols, int rows);
   static Matrix* identity(int size);
 
   int length() const;
 
-  float get(int row, int col) const;
-  void set(int row, int col, float value);
+  float get(int col, int row) const;
+  void set(int col, int row, float value);
+  Matrix fill(std::vector<float>);
 
-  bool operator==(Matrix) const;
+  bool operator==(const Matrix &) const;
+  bool operator!=(const Matrix &) const;
   Matrix operator*(Matrix) const;
   Vector operator*(Vector) const;
 
   Matrix transpose();
   Matrix inverse();
   float determinant() const;
-  float minor(int row, int col) const;
-  Matrix submatrix(int row2remove, int col2remove) const;
+  float minor(int col, int row) const;
+  Matrix submatrix(int col2remove, int row2remove) const;
+
+  friend std::ostream& operator<<(std::ostream& os, const Matrix&);
 };
 
 #endif
