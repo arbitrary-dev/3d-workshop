@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+#include "vector.hpp"
 #include <cstdlib>
 //#include "glog/logging.h"
 
@@ -51,6 +52,25 @@ bool Matrix::operator==(const Matrix &that) const {
 
 bool Matrix::operator!=(const Matrix &that) const {
   return !(*this == that);
+}
+
+Matrix Matrix::operator*(const Matrix that) const {
+  if (cols != that.rows)
+    throw;
+  Matrix *neu = new Matrix(that.cols, rows);
+  for (int j = 0; j < rows; j++)
+    for (int i = 0; i < that.cols; ++i) {
+      float v = 0;
+      for (int k = 0; k < cols; k++)
+        v += get(k, j) * that.get(i, k);
+      neu->set(i, j, v);
+    }
+  return *neu;
+}
+
+Vector Matrix::operator*(Vector) const {
+  // TODO
+  return *(new Vector(1, 2, 3, 4));
 }
 
 Matrix Matrix::transpose() {

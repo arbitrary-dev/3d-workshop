@@ -177,27 +177,41 @@ TEST(Matrix, TransposeIdentity) {
   EXPECT_EQ(transposed, expected);
 }
 
-TEST(Matrix, DISABLED_Multiplication) {
-  /* it("should multiplay 2 4x4 matrices", {
-final a = matrix(4, 4).fill([1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]);
-final b = matrix(4, 4).fill([-1, 2, -3, 4, -5, 6, -7, 8, -1, 2, -3, 4, -5, 6, -7, 8]);
-final output = matrix(4, 4).fill([
--34, 44, -54, 64, -82, 108, -134, 160, -34, 44, -54, 64, -82, 108, -134, 160, 4, 4
-]);
-final result = a * b;
-result.should.equal(output);
-});
-*/
+TEST(Matrix, Multiplication) {
+  const Matrix m1 = (new Matrix(4, 4))
+    ->fill({
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+    });
+  const Matrix m2 = (new Matrix(4, 4))
+    ->fill({
+      -1, 2, -3, 4,
+      -5, 6, -7, 8,
+      -1, 2, -3, 4,
+      -5, 6, -7, 8,
+    });
+  const Matrix expected = (new Matrix(4, 4))
+    ->fill({
+      -34, 44,  -54,  64,
+      -82, 108, -134, 160,
+      -34, 44,  -54,  64,
+      -82, 108, -134, 160,
+    });
+  EXPECT_EQ(m1 * m2, expected);
 }
 
-TEST(Matrix, DISABLED_MultByIdentity) {
-  /* it("should multiplay matrix with identity matrix", {
-final m = matrix(4, 4).fill([1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 0, 0, 0, 1]);
-final identityMatrix = identityMatrix(4, 4);
-final result = m * identityMatrix;
-result.should.equal(m);
-});
-*/
+TEST(Matrix, MultByIdentity) {
+  const Matrix m = (new Matrix(4, 4))
+    ->fill({
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      1, 2, 3, 4,
+      0, 0, 0, 1,
+    });
+  const Matrix id = *Matrix::identity(4);
+  EXPECT_EQ(m * id, m);
 }
 
 TEST(Matrix, DISABLED_MultByVector) {
