@@ -68,9 +68,15 @@ Matrix Matrix::operator*(const Matrix that) const {
   return *neu;
 }
 
-Vector Matrix::operator*(Vector) const {
-  // TODO
-  return *(new Vector(1, 2, 3, 4));
+Vector Matrix::operator*(Vector v) const {
+  if (cols != rows || cols != 4)
+    throw;
+  return *(new Vector(
+    v.x * get(0, 0) + v.y * get(1, 0) + v.z * get(2, 0) + v.w * get(3, 0),
+    v.x * get(0, 1) + v.y * get(1, 1) + v.z * get(2, 1) + v.w * get(3, 1),
+    v.x * get(0, 2) + v.y * get(1, 2) + v.z * get(2, 2) + v.w * get(3, 2),
+    v.x * get(0, 3) + v.y * get(1, 3) + v.z * get(2, 3) + v.w * get(3, 3)
+  ));
 }
 
 Matrix Matrix::transpose() {

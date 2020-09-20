@@ -1,6 +1,8 @@
 #ifndef H_VECTOR
 #define H_VECTOR
 
+#include <ostream>
+
 struct Vector {
 
   float x, y, z, w;
@@ -34,6 +36,8 @@ struct Vector {
   float dot(const Vector &) const;
 
   Vector cross(const Vector &) const;
+
+  friend std::ostream& operator<<(std::ostream& os, const Vector&);
 };
 
 #endif

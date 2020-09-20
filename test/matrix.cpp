@@ -135,6 +135,62 @@ TEST(Matrix, NonEquality3) {
   EXPECT_NE(*m1, *m2);
 }
 
+TEST(Matrix, Multiplication) {
+  const Matrix m1 = (new Matrix(4, 4))
+    ->fill({
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+    });
+  const Matrix m2 = (new Matrix(4, 4))
+    ->fill({
+      -1, 2, -3, 4,
+      -5, 6, -7, 8,
+      -1, 2, -3, 4,
+      -5, 6, -7, 8,
+    });
+  const Matrix expected = (new Matrix(4, 4))
+    ->fill({
+      -34, 44,  -54,  64,
+      -82, 108, -134, 160,
+      -34, 44,  -54,  64,
+      -82, 108, -134, 160,
+    });
+  EXPECT_EQ(m1 * m2, expected);
+}
+
+TEST(Matrix, MultByIdentity) {
+  const Matrix m = (new Matrix(4, 4))
+    ->fill({
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      1, 2, 3, 4,
+      0, 0, 0, 1,
+    });
+  const Matrix id = *Matrix::identity(4);
+  EXPECT_EQ(m * id, m);
+}
+
+TEST(Matrix, MultByVector) {
+  const Matrix m = (new Matrix(4, 4))
+    ->fill({
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      1, 2, 3, 4,
+      0, 0, 0, 1,
+    });
+  const Vector v = *(new Vector(1, 2, 3, 1));
+  const Vector expected = *(new Vector(18, 46, 18, 1));
+  EXPECT_EQ(m * v, expected);
+}
+
+TEST(Matrix, MultIdByVector) {
+  const Matrix id = *(Matrix::identity(4));
+  const Vector v = *(new Vector(1, 2, 3, 1));
+  EXPECT_EQ(id * v, v);
+}
+
 TEST(Matrix, Transpose43) {
   const Matrix transposed = (new Matrix(4, 3))
     ->fill({
@@ -175,62 +231,6 @@ TEST(Matrix, TransposeIdentity) {
   const Matrix transposed = Matrix::identity(4)->transpose();
   const Matrix expected = *Matrix::identity(4);
   EXPECT_EQ(transposed, expected);
-}
-
-TEST(Matrix, Multiplication) {
-  const Matrix m1 = (new Matrix(4, 4))
-    ->fill({
-      1, 2, 3, 4,
-      5, 6, 7, 8,
-      1, 2, 3, 4,
-      5, 6, 7, 8,
-    });
-  const Matrix m2 = (new Matrix(4, 4))
-    ->fill({
-      -1, 2, -3, 4,
-      -5, 6, -7, 8,
-      -1, 2, -3, 4,
-      -5, 6, -7, 8,
-    });
-  const Matrix expected = (new Matrix(4, 4))
-    ->fill({
-      -34, 44,  -54,  64,
-      -82, 108, -134, 160,
-      -34, 44,  -54,  64,
-      -82, 108, -134, 160,
-    });
-  EXPECT_EQ(m1 * m2, expected);
-}
-
-TEST(Matrix, MultByIdentity) {
-  const Matrix m = (new Matrix(4, 4))
-    ->fill({
-      1, 2, 3, 4,
-      5, 6, 7, 8,
-      1, 2, 3, 4,
-      0, 0, 0, 1,
-    });
-  const Matrix id = *Matrix::identity(4);
-  EXPECT_EQ(m * id, m);
-}
-
-TEST(Matrix, DISABLED_MultByVector) {
-  /*
-it("should multiplay matrix and vector", {
-finalm=matrix(4, 4).fill([1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 0, 0, 0, 1]);
-finalt=vector(1, 2, 3, 1);
-finaloutput=vector(18, 46, 18, 1);
-finalresult=m*t;
-result.should.equal(output);
- });
-
-it("shoul multiplay identity matrix by vector", {
-finalv=vector(1, 2, 3, 4);
-finalidentityMatrix=identityMatrix(4, 4);
-finalresult=identityMatrix*v;
-result.should.equal(v);
- });
-*/
 }
 
 TEST(Matrix, DISABLED_Inverse) {
