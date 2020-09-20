@@ -228,21 +228,62 @@ TEST(Matrix, Transpose34) {
 }
 
 TEST(Matrix, TransposeIdentity) {
-  const Matrix transposed = Matrix::identity(4)->transpose();
-  const Matrix expected = *Matrix::identity(4);
-  EXPECT_EQ(transposed, expected);
+  const Matrix id = *Matrix::identity(4);
+  EXPECT_EQ(id.transpose(), id);
 }
 
-TEST(Matrix, DISABLED_Inverse) {
-  // TODO
+TEST(Matrix, Submatrix) {
+  const Matrix m = (new Matrix(4, 3))
+    ->fill({
+      1, 4, 7, 1,
+      2, 5, 8, 2,
+      3, 6, 9, 3,
+    });
+  const Matrix expected = (new Matrix(3, 2))
+    ->fill({
+      1, 7, 1,
+      3, 9, 3,
+    });
+  EXPECT_EQ(m.submatrix(1, 1), expected);
 }
 
-TEST(Matrix, DISABLED_Determinant) {
-  /*
-it("should calculate determinant for 2x2", {
-final m = matrix(2, 2).fill([1, 2, 3, 4]);
-final result = m.determinant();
-result.should.be(-2);
-});
-*/
+TEST(Matrix, Determinant22) {
+  const Matrix m = (new Matrix(2, 2))
+    ->fill({
+      1, 2,
+      3, 4
+    });
+  EXPECT_EQ(m.determinant(), -2);
+}
+
+TEST(Matrix, Determinant33) {
+  const Matrix m = (new Matrix(3, 3))
+    ->fill({
+      -2, 2, -3,
+      -1, 1,  3,
+       2, 0, -1,
+    });
+  EXPECT_EQ(m.determinant(), 18);
+}
+
+TEST(Matrix, Inverse) {
+  const Matrix m = (new Matrix(3, 3))
+    ->fill({
+       10, -9, -12,
+       7,  -12, 11,
+      -10,  10, 3,
+    });
+  const Matrix result = m * m.inverse();
+
+  EXPECT_NEAR(result.get(0, 0), 1, 0.000001);
+  EXPECT_NEAR(result.get(1, 0), 0, 0.000001);
+  EXPECT_NEAR(result.get(2, 0), 0, 0.000001);
+
+  EXPECT_NEAR(result.get(0, 1), 0, 0.000001);
+  EXPECT_NEAR(result.get(1, 1), 1, 0.000001);
+  EXPECT_NEAR(result.get(2, 1), 0, 0.000001);
+
+  EXPECT_NEAR(result.get(0, 2), 0, 0.000001);
+  EXPECT_NEAR(result.get(1, 2), 0, 0.000001);
+  EXPECT_NEAR(result.get(2, 2), 1, 0.000001);
 }

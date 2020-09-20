@@ -79,47 +79,62 @@ Vector Matrix::operator*(Vector v) const {
   ));
 }
 
-Matrix Matrix::transpose() {
-  int L = length();
-  float *neu = (float *) malloc(L * sizeof(float));
+Matrix Matrix::transpose() const {
+  Matrix neu = *(new Matrix(rows, cols));
+  for (int j = 0; j < rows; j++)
+    for (int i = 0; i < cols; ++i)
+      neu.set(j, i, get(i, j));
+  return neu;
+}
 
-  for (int i = 0; i < L; ++i) {
-    int col = i % cols;
-    int row = i / cols;
-    neu[col * rows + row] = m[i];
+Matrix Matrix::submatrix(int col2remove, int row2remove) const {
+  Matrix neu = *(new Matrix(cols - 1, rows - 1));
+  for (int j = 0; j < rows; j++) {
+    if (j == row2remove)
+      continue;
+    for (int i = 0; i < cols; ++i) {
+      if (i == col2remove)
+        continue;
+      neu.set(
+        i < col2remove ? i : i - 1,
+        j < row2remove ? j : j - 1,
+        get(i, j)
+      );
+    }
   }
-  free(m);
-  m = neu;
+  return neu;
+}
 
-  int temp = cols;
-  cols = rows;
-  rows = temp;
+float Matrix::minor(int col, int row) const {
+  return submatrix(col, row).determinant();
+}
 
-  return *this;
+float Matrix::cofactor(int col, int row) const {
+  float m = minor(col, row);
+  return (col + row) % 2 == 0 ? m : -m;
+}
+
+float Matrix::determinant() const {
+  if (cols != rows)
+    throw;
+  float result = 0;
+  if (cols == 2)
+    result = get(0, 0) * get(1, 1) - get(1, 0) * get(0, 1);
+  else for (int i = 0; i < cols; ++i)
+    result += get(i, 0) * cofactor(i, 0);
+  return result;
+}
+
+Matrix Matrix::inverse() const {
+  Matrix neu = *(new Matrix(cols, rows));
+  float det = determinant();
+  for (int j = 0; j < rows; j++)
+    for (int i = 0; i < cols; ++i)
+      neu.set(i, j, cofactor(j, i) / det);
+  return neu;
 }
 
 /*
-function determinant(m:Matrix): Float {
-var det:Float = 0;
-if (m.length == 4) {
-det = m.get(0, 0) * m.get(1, 1) - m.get(0, 1) * m.get(1, 0);
-} else {
-for (column in 0...m.columns) {
-det += m.get(0, column) * cofactor(m, 0, column);
-}
-}
-return det;
-}
-
-function cofactor(m:Matrix, row:UInt, column:UInt):Float {
-final minorValue = minor(m, row, column);
-return (row + column) % 2 == 0 ? minorValue : minorValue * -1;
-}
-
-function minor(m:Matrix, row:UInt, column:UInt):Float {
-return determinant(submatrix(m, row, column));
-}
-
 function inverse(m:Matrix):Matrix {
 final out = new Matrix(m.rows, m.columns);
 final det = determinant(m);

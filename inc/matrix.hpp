@@ -26,11 +26,12 @@ public:
   Matrix operator*(Matrix) const;
   Vector operator*(Vector) const;
 
-  Matrix transpose();
-  Matrix inverse();
-  float determinant() const;
-  float minor(int col, int row) const;
+  Matrix transpose() const;
   Matrix submatrix(int col2remove, int row2remove) const;
+  float cofactor(int col, int row) const;
+  float minor(int col, int row) const;
+  float determinant() const;
+  Matrix inverse() const;
 
   friend std::ostream& operator<<(std::ostream& os, const Matrix&);
 };
